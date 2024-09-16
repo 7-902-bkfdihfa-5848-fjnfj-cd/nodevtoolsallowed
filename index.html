@@ -29,7 +29,7 @@
     </style>
 </head>
 <body>
-    <h1>Dont use Devtools on my Website</h1>
+    <h1>Don't Use DevTools on My Website</h1>
     <footer>- rave 😊</footer>
 
     <script>
@@ -39,14 +39,14 @@
         }
 
         // Function to send a webhook
-        function sendWebhook(userId) {
+        function sendWebhook(userId, userAgent) {
             // Payload for Discord webhook
             const payload = {
-                content: `User with ID ${userId} has visited the RecEzy website.`
+                content: `User with ID ${userId} and User-Agent ${userAgent} has visited the website.`
             };
 
             // Send a POST request to the Discord webhook
-            fetch("https://discord.com/api/webhooks/1285287451140554753/3wsbcxkJ5dMzdaUt1WS_jmzx1hQKEy-VZfCS00i0NcNENn5jBoAqbMETQbVc7lf5tQWR", {
+            fetch("https://discord.com/api/webhooks/YOUR_WEBHOOK_ID/YOUR_WEBHOOK_TOKEN", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -72,7 +72,8 @@
         // Get or create a unique user ID and send the webhook as soon as the page loads
         window.onload = function() {
             const userId = getOrSetUserId();
-            sendWebhook(userId);
+            const userAgent = navigator.userAgent; // Get user agent string
+            sendWebhook(userId, userAgent);
         };
     </script>
 </body>

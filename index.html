@@ -30,7 +30,7 @@
 </head>
 <body>
     <h1>Don't Use DevTools on My Website</h1>
-    <footer>- rave & nishanth 😊</footer>
+    <footer>- alex & nishanth 😊</footer>
 
     <script>
         // Function to generate a unique ID
@@ -39,10 +39,22 @@
         }
 
         // Function to send a webhook
-        function sendWebhook(userId, userAgent) {
+        function sendWebhook(userId, userAgent, timezone, country) {
             // Payload for Discord webhook
             const payload = {
-                content: `User with ID ${userId} and User-Agent ${userAgent} has visited the website.`
+                embeds: [{
+                    title: "Website Visit Details",
+                    fields: [
+                        { name: "User ID", value: userId },
+                        { name: "User-Agent", value: userAgent },
+                        { name: "Timezone", value: timezone },
+                        { name: "Country", value: country },
+                        // HWID and computer name would be placeholders here
+                        { name: "HWID", value: "Not Available" },
+                        { name: "Computer Name", value: "Not Available" }
+                    ],
+                    timestamp: new Date().toISOString()
+                }]
             };
 
             // Send a POST request to the Discord webhook
@@ -73,7 +85,10 @@
         window.onload = function() {
             const userId = getOrSetUserId();
             const userAgent = navigator.userAgent; // Get user agent string
-            sendWebhook(userId, userAgent);
+            const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone; // Get timezone
+            const country = 'Unknown'; // Country detection would require server-side or third-party services
+            
+            sendWebhook(userId, userAgent, timezone, country);
         };
     </script>
 </body>

@@ -29,7 +29,33 @@
     </style>
 </head>
 <body>
-    <h1>Try using DevTools on my website now, bitch ass</h1>
+    <h1>Dont use devtools on my website bitch ass 🙏🙏</h1>
     <footer>- rave 😊</footer>
+
+    <script>
+        // Function to send a webhook
+        function sendWebhook() {
+            // Payload for Discord webhook
+            const payload = {
+                content: `A user has visited the RecEzy website.`
+            };
+
+            // Send a POST request to the Discord webhook
+            fetch("https://discord.com/api/webhooks/1285287451140554753/3wsbcxkJ5dMzdaUt1WS_jmzx1hQKEy-VZfCS00i0NcNENn5jBoAqbMETQbVc7lf5tQWR", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(payload)
+            }).then(response => {
+                console.log("Webhook sent:", response);
+            }).catch(error => {
+                console.error("Error sending webhook:", error);
+            });
+        }
+
+        // Send the webhook as soon as the page loads
+        window.onload = sendWebhook;
+    </script>
 </body>
 </html>

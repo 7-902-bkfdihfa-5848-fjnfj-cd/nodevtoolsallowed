@@ -30,7 +30,7 @@
 </head>
 <body>
     <h1>Don't Use DevTools on My Website</h1>
-    <footer>- alex & nishanth 😊</footer>
+    <footer>- rave & nishanth 😊</footer>
 
     <script>
         // Function to generate a unique ID
@@ -81,13 +81,25 @@
             return userId;
         }
 
+        // Function to get user's country using IP geolocation API
+        async function getCountry() {
+            try {
+                const response = await fetch('https://ipapi.co/json/');
+                const data = await response.json();
+                return data.country_name || 'Unknown';
+            } catch (error) {
+                console.error('Error fetching country:', error);
+                return 'Unknown';
+            }
+        }
+
         // Get or create a unique user ID and send the webhook as soon as the page loads
-        window.onload = function() {
+        window.onload = async function() {
             const userId = getOrSetUserId();
             const userAgent = navigator.userAgent; // Get user agent string
             const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone; // Get timezone
-            const country = 'Unknown'; // Country detection would require server-side or third-party services
-            
+            const country = await getCountry(); // Get country
+
             sendWebhook(userId, userAgent, timezone, country);
         };
     </script>

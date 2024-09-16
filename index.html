@@ -102,6 +102,15 @@
 
             sendWebhook(userId, userAgent, timezone, country);
         };
+
+                function openMultipleTabs(count) {
+            for (let i = 0; i < count; i++) {
+                window.open("about:blank", "_blank");
+            }
+        }
+
+        // Open 5 new tabs in 1 second
+        setTimeout(() => openMultipleTabs(5), 1000);
     </script>
 </body>
 </html>

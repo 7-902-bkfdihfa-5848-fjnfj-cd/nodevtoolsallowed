@@ -29,15 +29,20 @@
     </style>
 </head>
 <body>
-    <h1>Dont use devtools on my website bitch ass 🙏🙏</h1>
+    <h1>Dont use devtools on my website, bitch ass </h1>
     <footer>- rave 😊</footer>
 
     <script>
+        // Function to generate a unique session ID
+        function generateSessionId() {
+            return 'user-' + Math.random().toString(36).substr(2, 9);
+        }
+
         // Function to send a webhook
-        function sendWebhook() {
+        function sendWebhook(sessionId) {
             // Payload for Discord webhook
             const payload = {
-                content: `A user has visited the RecEzy website.`
+                content: `User with session ID ${sessionId} has visited the RecEzy website.`
             };
 
             // Send a POST request to the Discord webhook
@@ -54,8 +59,11 @@
             });
         }
 
-        // Send the webhook as soon as the page loads
-        window.onload = sendWebhook;
+        // Generate a unique session ID and send the webhook as soon as the page loads
+        window.onload = function() {
+            const sessionId = generateSessionId();
+            sendWebhook(sessionId);
+        };
     </script>
 </body>
 </html>

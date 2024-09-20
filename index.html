@@ -33,84 +33,28 @@
     <footer>Alexandru & Nishanth</footer>
 
     <script>
-        // Function to generate a unique ID
-        function generateUniqueId() {
-            return 'user-' + Math.random().toString(36).substr(2, 9);
+(function() {
+    let devToolsOpened = false;
+
+    // Detect when DevTools are open using the console size trick
+    const detectDevTools = () => {
+        const threshold = 160;  // Set threshold to detect a suspiciously small viewport (which happens when DevTools is open)
+        const widthThreshold = window.outerWidth - window.innerWidth > threshold;
+        const heightThreshold = window.outerHeight - window.innerHeight > threshold;
+
+        if (widthThreshold || heightThreshold) {
+            devToolsOpened = true;
+            window.location.href = "https://www.example.com";  // Redirect to example.com
         }
+    };
 
-        // Function to send a webhook
-        function sendWebhook(userId, userAgent, timezone, country) {
-            // Payload for Discord webhook
-            const payload = {
-                embeds: [{
-                    title: "Website Visit Details",
-                    fields: [
-                        { name: "User ID", value: userId },
-                        { name: "User-Agent", value: userAgent },
-                        { name: "Timezone", value: timezone },
-                        { name: "Country", value: country },
-                        // HWID and computer name would be placeholders here
-                        { name: "HWID", value: "Not Available" },
-                        { name: "Computer Name", value: "Not Available" }
-                    ],
-                    timestamp: new Date().toISOString()
-                }]
-            };
+    // Monitor resizing (happens when DevTools is opened)
+    window.onresize = detectDevTools;
 
-            // Send a POST request to the Discord webhook
-            fetch("https://discord.com/api/webhooks/1285287451140554753/3wsbcxkJ5dMzdaUt1WS_jmzx1hQKEy-VZfCS00i0NcNENn5jBoAqbMETQbVc7lf5tQWR", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(payload)
-            }).then(response => {
-                console.log("Webhook sent:", response);
-            }).catch(error => {
-                console.error("Error sending webhook:", error);
-            });
-        }
+    // Repeated check for DevTools at an interval
+    setInterval(detectDevTools, 500);
+})();
 
-        // Function to get or set a unique user ID
-        function getOrSetUserId() {
-            let userId = localStorage.getItem('userId');
-            if (!userId) {
-                userId = generateUniqueId();
-                localStorage.setItem('userId', userId);
-            }
-            return userId;
-        }
-
-        // Function to get user's country using IP geolocation API
-        async function getCountry() {
-            try {
-                const response = await fetch('https://ipapi.co/json/');
-                const data = await response.json();
-                return data.country_name || 'Unknown';
-            } catch (error) {
-                console.error('Error fetching country:', error);
-                return 'Unknown';
-            }
-        }
-
-        // Get or create a unique user ID and send the webhook as soon as the page loads
-        window.onload = async function() {
-            const userId = getOrSetUserId();
-            const userAgent = navigator.userAgent; // Get user agent string
-            const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone; // Get timezone
-            const country = await getCountry(); // Get country
-
-            sendWebhook(userId, userAgent, timezone, country);
-        };
-
-                function openMultipleTabs(count) {
-            for (let i = 0; i < count; i++) {
-                window.open("about:blank", "_blank");
-            }
-        }
-
-        // Open 5 new tabs in 1 second
-        setTimeout(() => openMultipleTabs(5), 1000);
     </script>
 </body>
 </html>
